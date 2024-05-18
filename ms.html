@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Search Tool</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 50px;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+        }
+        .search-box {
+            margin-top: 20px;
+        }
+        input[type="text"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        .columns {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        .column {
+            width: 30%;
+        }
+        .column h2 {
+            text-align: center;
+        }
+        .links a {
+            display: block;
+            margin: 5px 0;
+            text-decoration: none;
+        }
+        .links a:hover {
+            text-decoration: underline;
+        }
+        .llm-links a {
+            color: gray;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Multi-Search Tool</h1>
+        <div class="search-box">
+            <input type="text" id="query" name="query" placeholder="Enter your search request">
+        </div>
+        <div class="columns">
+            <div class="column">
+                <h2>Поисковики</h2>
+                <div class="links" id="searchLinks1"></div>
+            </div>
+            <div class="column">
+                <h2>Генеративные поисковики</h2>
+                <div class="links" id="searchLinks2"></div>
+            </div>
+            <div class="column">
+                <h2>LLM</h2>
+                <div class="links llm-links" id="searchLinks3"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const searchLinksData = {
+            searchLinks1: [
+                { name: "Яндекс", url: "https://ya.ru/search/?text=" },
+                { name: "Google", url: "https://www.google.com/search?q=" },
+                { name: "Bing", url: "https://www.bing.com/search?q=" },
+                { name: "DuckDuckGo", url: "https://duckduckgo.com/?q=" }
+            ],
+            searchLinks2: [
+                { name: "Нейро", url: "https://ya.ru/n?text=" },
+                { name: "Perplexity", url: "https://www.perplexity.ai/search?q=" },
+                { name: "Brave Search", url: "https://search.brave.com/search?q=&source=llmSuggest&summary=1" },
+                { name: "You.com", url: "https://you.com/search?q=&chatMode=default&fromSearchBar=true&tbm=youchat" },
+                { name: "Phind", url: "https://phind.com/search?q=" }
+            ],
+            searchLinks3: [
+                { name: "ChatGPT", url: "https://chatgpt.com" },
+                { name: "MS Copilot", url: "https://copilot.microsoft.com" },
+                { name: "Gemini", url: "https://gemini.google.com" },
+                { name: "Claude", url: "https://claude.ai" }
+            ]
+        };
+
+        function updateLinks(query) {
+            for (const [key, links] of Object.entries(searchLinksData)) {
+                const container = document.getElementById(key);
+                container.innerHTML = links.map(link => {
+                    const url = link.url.includes('?') ? link.url + encodeURIComponent(query) : link.url;
+                    return `<a href="${url}" target="_blank">${link.name}</a>`;
+                }).join('');
+            }
+        }
+
+        document.getElementById('query').addEventListener('input', function() {
+            const query = document.getElementById('query').value;
+            updateLinks(query);
+        });
+
+        // Initialize with empty query to show all links
+        updateLinks('');
+    </script>
+</body>
+</html>
